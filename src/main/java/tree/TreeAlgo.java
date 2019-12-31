@@ -6,7 +6,7 @@ import java.util.*;
 
 public class TreeAlgo {
     /**
-     * 求一颗二叉树上路径和为某一值的所有路径
+     * 求一棵二叉树上路径和为某一值的所有路径
      *
      */
     ArrayList<ArrayList<Integer>> path(TreeNode root, int target){
@@ -79,8 +79,6 @@ public class TreeAlgo {
             }
             System.out.println();
         }
-
-
     }
 
     boolean isLeaf(TreeNode root){
@@ -123,9 +121,7 @@ public class TreeAlgo {
 
     /**
      * 二叉树是否相等
-     * @param root1
-     * @param root2
-     * @return
+     *
      */
     boolean isEqual(TreeNode root1, TreeNode root2){
         if(root1 == null && root2 == null){
@@ -144,6 +140,7 @@ public class TreeAlgo {
         }
     }
 
+    // 按层打印二叉树
     ArrayList<ArrayList<Integer> > Print(TreeNode root) {
         ArrayList<ArrayList<Integer> > ret = new ArrayList<ArrayList<Integer> >();
         if(root == null){
@@ -192,9 +189,8 @@ public class TreeAlgo {
 
     // 给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。
     // 注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。
+    // 题目没读懂？？？
     public TreeLinkNode GetNext(TreeLinkNode root) {
-
-
         return null;
     }
 
@@ -216,7 +212,7 @@ public class TreeAlgo {
         }
     }
 
-    // 求给定二叉树的后序遍历
+    // 求给定二叉树的后序遍历，非递归算法
     public ArrayList<Integer> postorderTraversal(TreeNode root) {
 
         ArrayList<Integer> ret = new ArrayList<Integer>();
@@ -247,7 +243,7 @@ public class TreeAlgo {
         return ret;
     }
 
-    // 求给定二叉树的先序遍历
+    // 求给定二叉树的先序遍历，非递归算法
     public ArrayList<Integer> preorderTraversal(TreeNode root) {
         ArrayList<Integer> ret = new ArrayList<Integer>();
         if(root == null){
@@ -304,6 +300,7 @@ public class TreeAlgo {
         buffer.remove(buffer.size() - 1);
     }
 
+    // 找出一棵二叉树的最大路径和，该路径的起点和终点可以是二叉树中的任意节点
     int maxPathSum = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {
@@ -340,6 +337,7 @@ public class TreeAlgo {
         }
     }
 
+    // 填充二叉树中所有节点的next指针
     public void connect(TreeLinkNode root){
         if(root == null){
             return;
@@ -381,6 +379,7 @@ public class TreeAlgo {
         }
     }
 
+    // 判断一棵二叉树中是否存在和为某值的路径
     public boolean hasPathSum(TreeNode root, int sum) {
         if(root == null){
             return false;
@@ -403,6 +402,7 @@ public class TreeAlgo {
         return null;
     }
 
+    // 判断一棵二叉树是否平衡
     public boolean isBalanced(TreeNode root) {
         if(root == null){
             return true;
@@ -415,6 +415,7 @@ public class TreeAlgo {
         return false;
     }
 
+    // 计算一棵二叉树的最大高度
     int depth(TreeNode root){
         if(root == null){
             return 0;
@@ -508,58 +509,7 @@ public class TreeAlgo {
         //System.out.println(treeAlgo.maxPathSum);
     }
 
-    public static void main02(String[] args){
-        String[] prvinces = new String[]{"jiangsu","sichuan","yunnan","zhejiang"};
-        String preix = "afs://xingtian.afs.baidu.com:9902/user/xingtian-map-navi/kangwei/data/truck/";
-        String[] event_day_01;
-        String[] event_day_02;
-        String t1 = "truck";
 
-        int[] month_day = {30, 31, 31, 30, 31, 30, 24};
-
-        List<String> list1 = new ArrayList<String>();
-        List<String> list2 = new ArrayList<String>();
-
-        int mon = 6;
-        for(int i = 0; i<month_day.length; i++){
-            for(int j = 1; j<=month_day[i]; j++){
-
-                String str_mon = "" + mon;
-                if(mon < 10){
-                    str_mon = "0" + mon;
-                }
-                String str_day = "" + j;
-                if(j < 10){
-                    str_day = "0" + j;
-                }
-                list1.add("2019/" + str_mon + "/" + str_day);
-                list2.add("2019" + str_mon + "" + str_day);
-            }
-            mon++;
-        }
-
-        String sample = "alter table lbsmap_ods_truck_track_data_di_tmp add partition(event_day='###', province='xxx') location 'afs://xingtian.afs.baidu.com:9902/user/xingtian-map-navi/kangwei/data/truck/+++/xcar/---';";
-
-        String sample1 = "INSERT INTO TABLE udw_ns.lbsmap_ods_truck_track_data_di PARTITION (event_day = '###', source = 'liangke') SELECT entity_name, longitude, latitude, direction, height, -1 as radius, -1 as floor, speed, loc_time FROM lbsmap_ods_truck_track_data_di_tmp where event_day='###';";
-        for(int i = 0; i<prvinces.length; i++){
-            for(int j = 0; j<list1.size(); j++){
-                String province = prvinces[i];
-                String day1 = list1.get(j);
-                String day2 = list2.get(j);
-
-                String target = sample.replace("###", day2).replace("xxx", province).replace("+++", province).replace("---", day1);
-
-                String target2 = sample1.replace("###", day2);
-
-                //System.out.println(target);
-                System.out.println(target2);
-            }
-        }
-
-
-
-
-    }
 
 
 
