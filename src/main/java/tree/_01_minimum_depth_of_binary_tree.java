@@ -12,7 +12,7 @@ import org.junit.Test;
  *
  *
  */
-public class _1_minimum_depth_of_binary_tree {
+public class _01_minimum_depth_of_binary_tree {
 
     int run(TreeNode root){
         if(root == null){

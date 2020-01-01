@@ -8,7 +8,7 @@ import java.util.*;
  *
  *
  */
-public class _3_binary_tree_preorder_traversal {
+public class _03_binary_tree_preorder_traversal {
     public ArrayList<Integer> preorderTraversal(TreeNode root) {
         ArrayList<Integer> ret = new ArrayList<Integer>();
         Stack<TreeNode> stack = new Stack<TreeNode>();

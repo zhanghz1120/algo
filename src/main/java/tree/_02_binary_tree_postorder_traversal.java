@@ -10,7 +10,7 @@ import java.util.*;
  *
  *
  */
-public class _2_binary_tree_postorder_traversal {
+public class _02_binary_tree_postorder_traversal {
     public ArrayList<Integer> postorderTraversal(TreeNode root) {
         ArrayList<Integer> ret = new ArrayList<Integer>();
         if(root == null){
