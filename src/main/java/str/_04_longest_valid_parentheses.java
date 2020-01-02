@@ -1,5 +1,8 @@
 package str;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.*;
 
 /**
@@ -15,12 +18,35 @@ public class _04_longest_valid_parentheses {
         if(s == null || "".equals(s)){
             return 0;
         }
-
+        int count = 0;
+        int max = 0;
         Stack<Character> stack = new Stack<Character>();
+        for(int i = 0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            if(ch == '('){
+                stack.push(ch);
+            }else{
+                if(stack.size() > 0){
+                    stack.pop();
+                    count++;
+                }else{
+                    max = count;
+                    count = 0;
+                }
+            }
 
+            if(count > max){
+                max = count;
+            }
+        }
+        return max * 2;
+    }
 
-
-        return 0;
+    @Test
+    public void testSolution(){
+        String s = "()(()";
+        int ret = new _04_longest_valid_parentheses().solution(s);
+        Assert.assertEquals(2, ret);
     }
 
 

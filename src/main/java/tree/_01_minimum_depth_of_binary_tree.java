@@ -1,6 +1,7 @@
 package tree;
 
 
+import common.TreeNode;
 import org.junit.Test;
 
 /**

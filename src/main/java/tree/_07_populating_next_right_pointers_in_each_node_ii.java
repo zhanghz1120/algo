@@ -1,5 +1,7 @@
 package tree;
 
+import common.TreeLinkNode;
+
 import java.util.*;
 
 /**

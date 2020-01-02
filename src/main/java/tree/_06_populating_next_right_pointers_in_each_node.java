@@ -1,5 +1,7 @@
 package tree;
 
+import common.TreeLinkNode;
+
 /**
  * 填充所有节点的next指针
  *
