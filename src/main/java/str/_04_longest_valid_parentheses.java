@@ -14,39 +14,56 @@ import java.util.*;
  *
  */
 public class _04_longest_valid_parentheses {
-    int solution(String s){
+    public int longestValidParentheses(String s) {
         if(s == null || "".equals(s)){
             return 0;
         }
-        int count = 0;
-        int max = 0;
         Stack<Character> stack = new Stack<Character>();
-        for(int i = 0; i<s.length(); i++){
+        int max = 0;
+        for(int i = 0; i<s.length()-1; i++){
+            int j = i+1;
+            while(j < s.length()){
+                if(check(s, i, j, stack)){
+                    if(j - i + 1 > max){
+                        max = j - i + 1;
+                    }
+                }
+                j++;
+                stack.clear();
+            }
+        }
+        //System.out.println(max);
+        return max;
+    }
+
+    boolean check(String s, int index, int j, Stack<Character> stack){
+        if(s.charAt(index) == ')' || s.charAt(j) == '(' || s.length() % 2 != 0){
+            return false;
+        }
+
+        for(int i = index; i<=j; i++){
             char ch = s.charAt(i);
             if(ch == '('){
                 stack.push(ch);
             }else{
                 if(stack.size() > 0){
                     stack.pop();
-                    count++;
                 }else{
-                    max = count;
-                    count = 0;
+                    return false;
                 }
             }
-
-            if(count > max){
-                max = count;
-            }
         }
-        return max * 2;
+        return stack.size() == 0;
     }
 
     @Test
     public void testSolution(){
-        String s = "()(()";
-        int ret = new _04_longest_valid_parentheses().solution(s);
-        Assert.assertEquals(2, ret);
+        _04_longest_valid_parentheses obj = new _04_longest_valid_parentheses();
+
+        obj.longestValidParentheses("(()()");
+        obj.longestValidParentheses("(()))");
+        obj.longestValidParentheses("()())");
+        obj.longestValidParentheses("()(()");
     }
 
 
