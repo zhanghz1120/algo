@@ -31,27 +31,31 @@ public class _02_three_sum {
             return ret;
         }
 
-        Set<Integer> set = new HashSet<Integer>();
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for(int i = 0; i<nums.length-1; i++){
-            if(!set.contains(nums[i])){
-                set.add(nums[i]);
+        int[] tmp = new int[nums.length];
+        for(int i = 0; i<nums.length; i++){
+            tmp[i] = nums[i];
+        }
+        Arrays.sort(tmp);
 
-                for(int j = i+1; j <nums.length; j++){
-                    if(!map.containsKey(nums[j])){
-                        if(map.containsKey(0 - nums[i] - nums[j])){
-                            List<Integer> buffer = new ArrayList<Integer>();
-                            buffer.add(nums[i]);
-                            buffer.add(nums[j]);
-                            buffer.add(0 - nums[i] - nums[j]);
-                            ret.add(buffer);
-                        }
-                        map.put(nums[j], j);
-                    }
+        List<Integer> buffer = null;
+        for(int i = 0; i<tmp.length-1; i++){
+            int remain = 0 - tmp[i];
+            int left = i+1;
+            int right = tmp.length - 1;
+            while(left < right){
+                if(tmp[left] + tmp[right] > remain){
+                    right--;
+                }else if(tmp[left] + tmp[right] < remain){
+                    left++;
+                }else{
+                    buffer = new ArrayList<Integer>();
+                    buffer.add(tmp[i]);
+                    buffer.add(tmp[left]);
+                    buffer.add(tmp[right]);
+                    ret.add(buffer);
                 }
             }
         }
-
         return ret;
     }
 
