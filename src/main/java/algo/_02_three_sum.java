@@ -22,9 +22,12 @@ package algo;
  *
  */
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class _02_three_sum {
     public List<List<Integer>> threeSum(int[] nums) {
@@ -33,81 +36,247 @@ public class _02_three_sum {
             return ret;
         }
 
-        Map<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+        // 存放奇数
+        Map<Integer, AtomicInteger> cache1 = new HashMap<Integer, AtomicInteger>();
+
+        // 存放偶数
+        Map<Integer, AtomicInteger> cache2 = new HashMap<Integer, AtomicInteger>();
+
+
         for(int i = 0; i<nums.length; i++){
-            if(!map.containsKey(nums[i])){
-                List<Integer> list = new ArrayList<Integer>();
-                list.add(i);
-                map.put(nums[i], list);
+            if(nums[i] % 2 != 0){
+                if(!cache1.containsKey(nums[i])){
+                    cache1.put(nums[i], new AtomicInteger(1));
+                }else{
+                    //changeValue(cache, nums[i], 1);
+                    int value = cache1.get(nums[i]).get();
+                    if(value < 3){
+                        cache1.get(nums[i]).incrementAndGet();
+                    }
+                }
             }else{
-                List<Integer> list = map.get(nums[i]);
-                list.add(i);
+                if(!cache2.containsKey(nums[i])){
+                    cache2.put(nums[i], new AtomicInteger(1));
+                }else{
+                    //changeValue(cache, nums[i], 1);
+                    int value = cache2.get(nums[i]).get();
+                    if(value < 3){
+                        cache2.get(nums[i]).incrementAndGet();
+                    }
+
+                }
             }
+
         }
 
-        Set<Integer> set = new HashSet<Integer>();
         Map<Integer, Set<Integer>> repeatMap = new HashMap<Integer, Set<Integer>>();
-        List<Integer> buffer = null;
-        for(int i = 0; i<nums.length-1; i++){
-            if(set.contains(nums[i])){
-                continue;
-            }
+        Set<Integer> keySet1 = cache1.keySet();
+        Set<Integer> keySet2 = cache2.keySet();
+        for(Integer i : keySet1){
+            cache1.get(i).decrementAndGet();
+            //changeValue(cache, i, -1);
+            //cache.put(i, cache.get(i)-1);
+            for(Integer j: keySet1){
+                if(cache1.get(j).get() > 0){
+                    cache1.get(j).decrementAndGet();
+                    //changeValue(cache, j, -1);
+                    //cache.put(j, cache.get(j)-1);
+                    int remain = 0 - i - j;
+                    if(cache2.containsKey(remain)){
+                        if(cache2.get(remain).get() > 0){
+                            int max = Math.max(i, Math.max(j, remain));
+                            int min = Math.min(i, Math.min(j, remain));
 
-            for(int j = i+1; j<nums.length; j++){
-                int remain = 0 - nums[i] - nums[j];
-
-                if(map.containsKey(remain)){
-                    List<Integer> list = map.get(remain);
-                    for(Integer index : list){
-                        if(index != i && index != j){
-                            int max = Math.max(nums[i], Math.max(nums[j], remain));
-                            int min = Math.min(nums[i], Math.min(nums[j], remain));
-
+                            boolean flag = false;
                             if(!repeatMap.containsKey(max)){
+                                flag = true;
                                 Set<Integer> tmpSet = new HashSet<Integer>();
                                 tmpSet.add(min);
                                 repeatMap.put(max, tmpSet);
-                                buffer = new ArrayList();
-                                buffer.add(nums[i]);
-                                buffer.add(nums[j]);
-                                buffer.add(remain);
-                                ret.add(buffer);
                             }else{
                                 Set<Integer> tmpSet = repeatMap.get(max);
                                 if(!tmpSet.contains(min)){
+                                    flag = true;
                                     tmpSet.add(min);
-
-                                    buffer = new ArrayList();
-                                    buffer.add(nums[i]);
-                                    buffer.add(nums[j]);
-                                    buffer.add(remain);
-                                    ret.add(buffer);
                                 }
+                            }
+                            if(flag){
+                                List<Integer> list = new ArrayList<Integer>();
+                                list.add(i);
+                                list.add(j);
+                                list.add(remain);
+
+                                ret.add(list);
                             }
                         }
                     }
+                    //cache.put(j, cache.get(j)+1);
+                    //changeValue(cache, j, 1);
+                    cache1.get(j).incrementAndGet();
                 }
             }
+
+            for(Integer j: keySet2){
+                if(cache2.get(j).get() > 0){
+                    cache2.get(j).decrementAndGet();
+                    //changeValue(cache, j, -1);
+                    //cache.put(j, cache.get(j)-1);
+                    int remain = 0 - i - j;
+                    if(cache1.containsKey(remain)){
+                        if(cache1.get(remain).get() > 0){
+                            int max = Math.max(i, Math.max(j, remain));
+                            int min = Math.min(i, Math.min(j, remain));
+
+                            boolean flag = false;
+                            if(!repeatMap.containsKey(max)){
+                                flag = true;
+                                Set<Integer> tmpSet = new HashSet<Integer>();
+                                tmpSet.add(min);
+                                repeatMap.put(max, tmpSet);
+                            }else{
+                                Set<Integer> tmpSet = repeatMap.get(max);
+                                if(!tmpSet.contains(min)){
+                                    flag = true;
+                                    tmpSet.add(min);
+                                }
+                            }
+                            if(flag){
+                                List<Integer> list = new ArrayList<Integer>();
+                                list.add(i);
+                                list.add(j);
+                                list.add(remain);
+
+                                ret.add(list);
+                            }
+                        }
+                    }
+                    //cache.put(j, cache.get(j)+1);
+                    //changeValue(cache, j, 1);
+                    cache2.get(j).incrementAndGet();
+                }
+            }
+            //cache.put(i, cache.get(i)+1);
+            //changeValue(cache, i, 1);
+            cache1.get(i).incrementAndGet();
+        }
+
+        for(Integer i : keySet2){
+            cache2.get(i).decrementAndGet();
+            //changeValue(cache, i, -1);
+            //cache.put(i, cache.get(i)-1);
+            for(Integer j: keySet1){
+                if(cache1.get(j).get() > 0){
+                    cache1.get(j).decrementAndGet();
+                    //changeValue(cache, j, -1);
+                    //cache.put(j, cache.get(j)-1);
+                    int remain = 0 - i - j;
+                    if(cache1.containsKey(remain)){
+                        if(cache1.get(remain).get() > 0){
+                            int max = Math.max(i, Math.max(j, remain));
+                            int min = Math.min(i, Math.min(j, remain));
+
+                            boolean flag = false;
+                            if(!repeatMap.containsKey(max)){
+                                flag = true;
+                                Set<Integer> tmpSet = new HashSet<Integer>();
+                                tmpSet.add(min);
+                                repeatMap.put(max, tmpSet);
+                            }else{
+                                Set<Integer> tmpSet = repeatMap.get(max);
+                                if(!tmpSet.contains(min)){
+                                    flag = true;
+                                    tmpSet.add(min);
+                                }
+                            }
+                            if(flag){
+                                List<Integer> list = new ArrayList<Integer>();
+                                list.add(i);
+                                list.add(j);
+                                list.add(remain);
+
+                                ret.add(list);
+                            }
+                        }
+                    }
+                    //cache.put(j, cache.get(j)+1);
+                    //changeValue(cache, j, 1);
+                    cache1.get(j).incrementAndGet();
+                }
+            }
+
+            for(Integer j: keySet2){
+                if(cache2.get(j).get() > 0){
+                    cache2.get(j).decrementAndGet();
+                    //changeValue(cache, j, -1);
+                    //cache.put(j, cache.get(j)-1);
+                    int remain = 0 - i - j;
+                    if(cache2.containsKey(remain)){
+                        if(cache2.get(remain).get() > 0){
+                            int max = Math.max(i, Math.max(j, remain));
+                            int min = Math.min(i, Math.min(j, remain));
+
+                            boolean flag = false;
+                            if(!repeatMap.containsKey(max)){
+                                flag = true;
+                                Set<Integer> tmpSet = new HashSet<Integer>();
+                                tmpSet.add(min);
+                                repeatMap.put(max, tmpSet);
+                            }else{
+                                Set<Integer> tmpSet = repeatMap.get(max);
+                                if(!tmpSet.contains(min)){
+                                    flag = true;
+                                    tmpSet.add(min);
+                                }
+                            }
+                            if(flag){
+                                List<Integer> list = new ArrayList<Integer>();
+                                list.add(i);
+                                list.add(j);
+                                list.add(remain);
+
+                                ret.add(list);
+                            }
+                        }
+                    }
+                    //cache.put(j, cache.get(j)+1);
+                    //changeValue(cache, j, 1);
+                    cache2.get(j).incrementAndGet();
+                }
+            }
+            //cache.put(i, cache.get(i)+1);
+            //changeValue(cache, i, 1);
+            cache2.get(i).incrementAndGet();
         }
         return ret;
     }
 
-    //[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    public void changeValue(Map<Integer, Integer> map, Integer key, int ince){
+        Integer value = map.get(key);
+        int intVal = value.intValue();
+        map.put(key, value + ince);
+    }
 
     // [-1,0,1,2,-1,-4]
-    // [[-1,0,1],[-1,1,0],[-1,2,-1],[-1,-1,2],[0,1,-1],[0,1,-1],[0,-1,1],[1,-1,0],[2,-1,-1]]
-    // [[-4,-2,6],[-4,0,4],[-4,1,3],[-4,2,2],[-2,-2,4],[-2,-2,4],[-2,-2,4],[-2,-2,4],[-2,0,2],[-2,0,2],[-2,0,2],[-2,2,0],[-2,2,0],
-    // [-2,2,0],[-2,4,-2],[-2,4,-2],[-2,4,-2],[-2,4,-2],[-2,-2,4],[-2,-2,4],[-2,0,2],[-2,0,2],[-2,0,2],[-2,2,0],[-2,2,0],[-2,2,0],
-    // [-2,4,-2],[-2,4,-2],[-2,4,-2],[-2,4,-2],[-2,0,2],[-2,0,2],[-2,0,2],[-2,2,0],[-2,2,0],[-2,2,0],[-2,4,-2],[-2,4,-2],[-2,4,-2],
-    // [-2,4,-2],[0,2,-2],[0,2,-2],[0,2,-2],[0,2,-2],[0,2,-2],[0,2,-2],[0,2,-2],[0,2,-2],[0,2,-2]]
-    // 预期结果
+
+    private long l;
+    private _02_three_sum obj;
+
+    @Before
+    public void set(){
+        obj = new _02_three_sum();
+        l = System.currentTimeMillis();
+    }
+
+    @After
+    public void clean(){
+        l=System.currentTimeMillis()-l;
+        System.out.println("运行时间是 " + l);
+    }
 
     @Test
     public void testThreeSum(){
-        int[] sums = new int[500];
-
-        List<List<Integer>> ret = new _02_three_sum().threeSum(sums);
-
+        int[] sums = {-1,0,1,2,-1,-4};
+        List<List<Integer>> ret = obj.threeSum(sums);
         System.out.println(Arrays.toString(ret.toArray()));
     }
 
