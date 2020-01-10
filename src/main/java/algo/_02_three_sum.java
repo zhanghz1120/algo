@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class _02_three_sum {
     public List<List<Integer>> threeSum(int[] nums) {
@@ -36,144 +35,40 @@ public class _02_three_sum {
             return ret;
         }
 
-        // 存放奇数
-        Map<Integer, AtomicInteger> cache1 = new HashMap<Integer, AtomicInteger>();
-
-        // 存放偶数
-        Map<Integer, AtomicInteger> cache2 = new HashMap<Integer, AtomicInteger>();
-
-
+        Map<Integer, Integer> cache = new HashMap<Integer, Integer>();
         for(int i = 0; i<nums.length; i++){
-            if(nums[i] % 2 != 0){
-                if(!cache1.containsKey(nums[i])){
-                    cache1.put(nums[i], new AtomicInteger(1));
-                }else{
-                    //changeValue(cache, nums[i], 1);
-                    int value = cache1.get(nums[i]).get();
-                    if(value < 3){
-                        cache1.get(nums[i]).incrementAndGet();
-                    }
-                }
+            if(!cache.containsKey(nums[i])){
+                cache.put(nums[i], 1);
             }else{
-                if(!cache2.containsKey(nums[i])){
-                    cache2.put(nums[i], new AtomicInteger(1));
-                }else{
-                    //changeValue(cache, nums[i], 1);
-                    int value = cache2.get(nums[i]).get();
-                    if(value < 3){
-                        cache2.get(nums[i]).incrementAndGet();
-                    }
-
-                }
+                changeValue(cache, nums[i], 1);
             }
-
         }
 
         Map<Integer, Set<Integer>> repeatMap = new HashMap<Integer, Set<Integer>>();
-        Set<Integer> keySet1 = cache1.keySet();
-        Set<Integer> keySet2 = cache2.keySet();
-        for(Integer i : keySet1){
-            cache1.get(i).decrementAndGet();
-            //changeValue(cache, i, -1);
-            //cache.put(i, cache.get(i)-1);
-            for(Integer j: keySet1){
-                if(cache1.get(j).get() > 0){
-                    cache1.get(j).decrementAndGet();
-                    //changeValue(cache, j, -1);
-                    //cache.put(j, cache.get(j)-1);
-                    int remain = 0 - i - j;
-                    if(cache2.containsKey(remain)){
-                        if(cache2.get(remain).get() > 0){
-                            int max = Math.max(i, Math.max(j, remain));
-                            int min = Math.min(i, Math.min(j, remain));
+        Set<Integer> keySet = cache.keySet();
 
-                            boolean flag = false;
-                            if(!repeatMap.containsKey(max)){
-                                flag = true;
-                                Set<Integer> tmpSet = new HashSet<Integer>();
-                                tmpSet.add(min);
-                                repeatMap.put(max, tmpSet);
-                            }else{
-                                Set<Integer> tmpSet = repeatMap.get(max);
-                                if(!tmpSet.contains(min)){
-                                    flag = true;
-                                    tmpSet.add(min);
-                                }
-                            }
-                            if(flag){
-                                List<Integer> list = new ArrayList<Integer>();
-                                list.add(i);
-                                list.add(j);
-                                list.add(remain);
-
-                                ret.add(list);
-                            }
-                        }
-                    }
-                    //cache.put(j, cache.get(j)+1);
-                    //changeValue(cache, j, 1);
-                    cache1.get(j).incrementAndGet();
-                }
-            }
-
-            for(Integer j: keySet2){
-                if(cache2.get(j).get() > 0){
-                    cache2.get(j).decrementAndGet();
-                    //changeValue(cache, j, -1);
-                    //cache.put(j, cache.get(j)-1);
-                    int remain = 0 - i - j;
-                    if(cache1.containsKey(remain)){
-                        if(cache1.get(remain).get() > 0){
-                            int max = Math.max(i, Math.max(j, remain));
-                            int min = Math.min(i, Math.min(j, remain));
-
-                            boolean flag = false;
-                            if(!repeatMap.containsKey(max)){
-                                flag = true;
-                                Set<Integer> tmpSet = new HashSet<Integer>();
-                                tmpSet.add(min);
-                                repeatMap.put(max, tmpSet);
-                            }else{
-                                Set<Integer> tmpSet = repeatMap.get(max);
-                                if(!tmpSet.contains(min)){
-                                    flag = true;
-                                    tmpSet.add(min);
-                                }
-                            }
-                            if(flag){
-                                List<Integer> list = new ArrayList<Integer>();
-                                list.add(i);
-                                list.add(j);
-                                list.add(remain);
-
-                                ret.add(list);
-                            }
-                        }
-                    }
-                    //cache.put(j, cache.get(j)+1);
-                    //changeValue(cache, j, 1);
-                    cache2.get(j).incrementAndGet();
-                }
-            }
-            //cache.put(i, cache.get(i)+1);
-            //changeValue(cache, i, 1);
-            cache1.get(i).incrementAndGet();
+        int[] map = new int[keySet.size()];
+        int k = 0;
+        for(Integer i : keySet){
+            map[k] = i;
+            k++;
         }
 
-        for(Integer i : keySet2){
-            cache2.get(i).decrementAndGet();
-            //changeValue(cache, i, -1);
-            //cache.put(i, cache.get(i)-1);
-            for(Integer j: keySet1){
-                if(cache1.get(j).get() > 0){
-                    cache1.get(j).decrementAndGet();
-                    //changeValue(cache, j, -1);
-                    //cache.put(j, cache.get(j)-1);
-                    int remain = 0 - i - j;
-                    if(cache1.containsKey(remain)){
-                        if(cache1.get(remain).get() > 0){
-                            int max = Math.max(i, Math.max(j, remain));
-                            int min = Math.min(i, Math.min(j, remain));
+        for(int i = 0; i<map.length; i++){
+            int k1 = map[i];
+            changeValue(cache, k1, -1);
+
+            for(int j = i; j<map.length; j++){
+                int k2 = map[j];
+
+                if(cache.get(k2) > 0){
+                    changeValue(cache, k2, -1);
+                    int remain = 0 - k1 - k2;
+
+                    if(cache.containsKey(remain)){
+                        if(cache.get(remain) > 0){
+                            int max = Math.max(k1, Math.max(k2, remain));
+                            int min = Math.min(k1, Math.min(k2, remain));
 
                             boolean flag = false;
                             if(!repeatMap.containsKey(max)){
@@ -190,62 +85,18 @@ public class _02_three_sum {
                             }
                             if(flag){
                                 List<Integer> list = new ArrayList<Integer>();
-                                list.add(i);
-                                list.add(j);
+                                list.add(k1);
+                                list.add(k2);
                                 list.add(remain);
 
                                 ret.add(list);
                             }
                         }
                     }
-                    //cache.put(j, cache.get(j)+1);
-                    //changeValue(cache, j, 1);
-                    cache1.get(j).incrementAndGet();
+                    changeValue(cache, k2, 1);
                 }
             }
-
-            for(Integer j: keySet2){
-                if(cache2.get(j).get() > 0){
-                    cache2.get(j).decrementAndGet();
-                    //changeValue(cache, j, -1);
-                    //cache.put(j, cache.get(j)-1);
-                    int remain = 0 - i - j;
-                    if(cache2.containsKey(remain)){
-                        if(cache2.get(remain).get() > 0){
-                            int max = Math.max(i, Math.max(j, remain));
-                            int min = Math.min(i, Math.min(j, remain));
-
-                            boolean flag = false;
-                            if(!repeatMap.containsKey(max)){
-                                flag = true;
-                                Set<Integer> tmpSet = new HashSet<Integer>();
-                                tmpSet.add(min);
-                                repeatMap.put(max, tmpSet);
-                            }else{
-                                Set<Integer> tmpSet = repeatMap.get(max);
-                                if(!tmpSet.contains(min)){
-                                    flag = true;
-                                    tmpSet.add(min);
-                                }
-                            }
-                            if(flag){
-                                List<Integer> list = new ArrayList<Integer>();
-                                list.add(i);
-                                list.add(j);
-                                list.add(remain);
-
-                                ret.add(list);
-                            }
-                        }
-                    }
-                    //cache.put(j, cache.get(j)+1);
-                    //changeValue(cache, j, 1);
-                    cache2.get(j).incrementAndGet();
-                }
-            }
-            //cache.put(i, cache.get(i)+1);
-            //changeValue(cache, i, 1);
-            cache2.get(i).incrementAndGet();
+            changeValue(cache, k1, 1);
         }
         return ret;
     }
