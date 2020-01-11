@@ -40,7 +40,11 @@ public class _02_three_sum {
             if(!cache.containsKey(nums[i])){
                 cache.put(nums[i], 1);
             }else{
-                changeValue(cache, nums[i], 1);
+                int value = cache.get(nums[i]);
+                if(value < 3){
+                    changeValue(cache, nums[i], 1);
+                }
+
             }
         }
 
@@ -105,6 +109,55 @@ public class _02_three_sum {
         Integer value = map.get(key);
         int intVal = value.intValue();
         map.put(key, value + ince);
+    }
+
+    public List<List<Integer>> threeSum02(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        if(nums == null || nums.length == 0){
+            return ret;
+        }
+
+        Map<Integer, Integer> cache = new HashMap<Integer, Integer>();
+        for(int i = 0; i<nums.length; i++){
+            if(!cache.containsKey(nums[i])){
+                cache.put(nums[i], 1);
+            }else{
+                int value = cache.get(nums[i]);
+                if(value < 3){
+                    changeValue(cache, nums[i], 1);
+                }
+
+            }
+        }
+
+        Map<Integer, Set<Integer>> repeatMap = new HashMap<Integer, Set<Integer>>();
+        Set<Integer> keySet = cache.keySet();
+
+        int[] map = new int[keySet.size()];
+        int k = 0;
+        for(Integer i : keySet){
+            map[k] = i;
+            k++;
+        }
+
+        Arrays.sort(map);
+        for(int i=0; i<map.length; i++){
+            int k1 = map[i];
+            changeValue(cache, k1, -1);
+            for(int j=i; j<map.length; j++){
+                int k2 = map[j];
+                if(cache.get(k2) < 1){
+                    continue;
+                }
+                changeValue(cache, k2, -1);
+                //int remain =
+
+            }
+
+
+        }
+
+        return ret;
     }
 
     // [-1,0,1,2,-1,-4]
