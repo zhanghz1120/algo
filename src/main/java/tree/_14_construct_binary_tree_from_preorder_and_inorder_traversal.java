@@ -21,14 +21,16 @@ public class _14_construct_binary_tree_from_preorder_and_inorder_traversal {
     }
 
     public TreeNode build(int[] preorder, int[] inorder, int i1, int j1, int i2, int j2){
-        if(i1 > i2){
+        if(i1 > j1){
             return null;
         }
         TreeNode root = new TreeNode(preorder[i1]);
         int mid = map.get(root.val);
-        int leftLength = mid - i1;
-        TreeNode left = build(preorder, inorder, i1+1, i1+leftLength, i2, mid-1);
-        TreeNode right = build(preorder, inorder, i1+leftLength+1, j1, mid+1, j2);
+        int leftLength = mid - i2;
+        int rightLength = j2-mid;
+
+        TreeNode left = build(preorder, inorder, i1+1, i1+leftLength, i2, i2+leftLength-1);
+        TreeNode right = build(preorder, inorder, j1-rightLength+1, j1, j2-rightLength+1, j2);
 
         root.left = left;
         root.right = right;
