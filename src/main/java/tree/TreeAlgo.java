@@ -9,68 +9,6 @@ import java.util.*;
 
 public class TreeAlgo {
 
-    boolean isLeaf(TreeNode root){
-        return root.left == null && root.right == null;
-    }
-
-    /**
-     * 是否是对称二叉树
-     *
-     * @param root
-     * @return
-     */
-    boolean isSymmetrical(TreeNode root){
-        if(root == null){
-            return true;
-        }
-        return isSymmetrical(root.left, root.right);
-    }
-
-    boolean isSymmetrical(TreeNode root1, TreeNode root2){
-        if(root1 == null && root2 == null){
-            return true;
-        }else if(root1 == null && root2 != null){
-            return false;
-        }else if(root1 != null && root2 == null){
-            return false;
-        }else{
-            if(root1.val != root2.val){
-                return false;
-            }else{
-                return isSymmetrical(root1.left, root2.right)
-                        && isSymmetrical(root1.right, root2.left);
-            }
-        }
-    }
-
-    /**
-     * 二叉树是否相等
-     *
-     */
-    boolean isEqual(TreeNode root1, TreeNode root2){
-        if(root1 == null && root2 == null){
-            return true;
-        }else if(root1 == null && root2 != null){
-            return false;
-        }else if(root1 != null && root2 == null){
-            return false;
-        }else{
-            if(root1.val != root2.val){
-                return false;
-            }else{
-                return isEqual(root1.left, root2.left) && isEqual(root1.right, root2.right);
-            }
-
-        }
-    }
-
-    // 给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。
-    // 注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。
-    // 题目没读懂？？？
-    public TreeLinkNode GetNext(TreeLinkNode root) {
-        return null;
-    }
-
     // 判断一棵二叉树是否平衡
     public boolean isBalanced(TreeNode root) {
         if(root == null){
