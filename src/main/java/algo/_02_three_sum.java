@@ -130,7 +130,6 @@ public class _02_three_sum {
             }
         }
 
-        Map<Integer, Set<Integer>> repeatMap = new HashMap<Integer, Set<Integer>>();
         Set<Integer> keySet = cache.keySet();
 
         int[] map = new int[keySet.size()];
@@ -139,22 +138,21 @@ public class _02_three_sum {
             map[k] = i;
             k++;
         }
-
         Arrays.sort(map);
-        for(int i=0; i<map.length; i++){
-            int k1 = map[i];
-            changeValue(cache, k1, -1);
-            for(int j=i; j<map.length; j++){
-                int k2 = map[j];
-                if(cache.get(k2) < 1){
-                    continue;
+
+        for(int i = 0; i<map.length-2; i++){
+            int left = i;
+            int right = map.length-1;
+
+            while(left < right){
+                int tmp = map[i] + map[left] + map[right];
+                if(tmp == 0){
+                    List<Integer> list = new ArrayList<Integer>();
+                    list.add(map[i]);
+                    list.add(map[left]);
+                    list.add(map[right]);
                 }
-                changeValue(cache, k2, -1);
-                //int remain =
-
             }
-
-
         }
 
         return ret;
