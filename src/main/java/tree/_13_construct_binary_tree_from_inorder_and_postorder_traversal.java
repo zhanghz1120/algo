@@ -12,26 +12,31 @@ import java.util.*;
  *
  */
 public class _13_construct_binary_tree_from_inorder_and_postorder_traversal {
+    static Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+
     public TreeNode buildTree(int[] inorder, int[] postorder) {
+        for(int i = 0; i<inorder.length; i++){
+            map.put(inorder[i], i);
+        }
         return build(inorder, postorder, 0, inorder.length-1, 0, postorder.length-1);
     }
 
     public TreeNode build(int[] inorder, int[] post_order, int i1, int j1, int i2, int j2){
-        if(i1 == j1 || i2 == j2){
-            return new TreeNode(inorder[i1]);
+        if(i1 > j1){
+            return null;
         }
 
         TreeNode root = new TreeNode(post_order[j2]);
-        int mid = i1;
-        for(int i = i1; i<=j1; i++){
-            if(inorder[i] == root.val){
-                mid = i;
-                break;
-            }
-        }
+        int mid = map.get(root.val);
+        /**
+         * int numLeft=k-inL;  //左子区间为左子树0
+         *     root->lchild=create(postL,postL+numLeft-1,inL,k-1);
+         *     root->rchild=create(postL+numLeft,postR-1,k+1,inR);
+         */
+        int numLeft = mid-i1;
 
-        TreeNode left = build(inorder, post_order, i1, mid-1, i2, mid-1);
-        TreeNode right = build(inorder, post_order, mid+1, j1, mid, j2-1);
+        TreeNode left = build(inorder, post_order, i1, mid-1, i2, i2+numLeft-1);
+        TreeNode right = build(inorder, post_order, mid+1, j1, i2+numLeft, j2-1);
         root.left = left;
         root.right = right;
         return root;
@@ -39,13 +44,14 @@ public class _13_construct_binary_tree_from_inorder_and_postorder_traversal {
 
     @Test
     public void testBuildTree(){
-        _13_construct_binary_tree_from_inorder_and_postorder_traversal obj = new _13_construct_binary_tree_from_inorder_and_postorder_traversal();
+        _13_construct_binary_tree_from_inorder_and_postorder_traversal obj =
+                new _13_construct_binary_tree_from_inorder_and_postorder_traversal();
 
         int[] inorder = {5, 0, 6, 1, 2, 8, 3};
         int[] post_order = {5, 6, 0, 1, 8, 3, 2};
         TreeNode root = obj.buildTree(inorder, post_order);
 
-        //System.out.println(Arrays.toString(TreeNode.printTree(root).toArray()));
+        System.out.println(Arrays.toString(TreeNode.printTree(root).toArray()));
     }
 
 }
