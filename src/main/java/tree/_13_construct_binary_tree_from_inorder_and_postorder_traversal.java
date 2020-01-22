@@ -33,10 +33,11 @@ public class _13_construct_binary_tree_from_inorder_and_postorder_traversal {
          *     root->lchild=create(postL,postL+numLeft-1,inL,k-1);
          *     root->rchild=create(postL+numLeft,postR-1,k+1,inR);
          */
-        int numLeft = mid-i1;
+        int leftLength = mid-i1;
+        int rightLength= j1-mid;
 
-        TreeNode left = build(inorder, post_order, i1, mid-1, i2, i2+numLeft-1);
-        TreeNode right = build(inorder, post_order, mid+1, j1, i2+numLeft, j2-1);
+        TreeNode left = build(inorder, post_order, i1, i1+leftLength-1, i2, i2+leftLength-1);
+        TreeNode right = build(inorder, post_order, j1-rightLength+1, j1, j2-rightLength, j2-1);
         root.left = left;
         root.right = right;
         return root;
