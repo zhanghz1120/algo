@@ -28,11 +28,7 @@ public class _13_construct_binary_tree_from_inorder_and_postorder_traversal {
 
         TreeNode root = new TreeNode(post_order[j2]);
         int mid = map.get(root.val);
-        /**
-         * int numLeft=k-inL;  //左子区间为左子树0
-         *     root->lchild=create(postL,postL+numLeft-1,inL,k-1);
-         *     root->rchild=create(postL+numLeft,postR-1,k+1,inR);
-         */
+
         int leftLength = mid-i1;
         int rightLength= j1-mid;
 
