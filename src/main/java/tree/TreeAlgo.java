@@ -10,11 +10,7 @@ import java.util.*;
 public class TreeAlgo {
 
     boolean isLeaf(TreeNode root){
-        if(root.left == null && root.right == null){
-            return true;
-        }else{
-            return false;
-        }
+        return root.left == null && root.right == null;
     }
 
     /**
@@ -72,10 +68,6 @@ public class TreeAlgo {
     // 注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。
     // 题目没读懂？？？
     public TreeLinkNode GetNext(TreeLinkNode root) {
-        return null;
-    }
-
-    public ArrayList<ArrayList<Integer>> pathSum(TreeNode root, int sum) {
         return null;
     }
 
