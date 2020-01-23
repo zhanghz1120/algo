@@ -18,22 +18,32 @@ public class _22_binary_tree_inorder_traversal {
         if (root == null){
             return ret;
         }
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.offer(root);
-        while(queue.size() > 0){
-            TreeNode node = queue.poll();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.push(root);
+
+        TreeNode tmp = root;
+
+        while(stack.size() > 0 || tmp != null){
+            while(tmp != null){
+                stack.push(tmp);
+                tmp = tmp.left;
+            }
+
+            TreeNode node = stack.pop();
             ret.add(node.val);
-
-            if(node.left != null){
-                queue.offer(node.left);
-            }
-
-            if(node.right != null){
-                queue.offer(node.right);
-            }
+            tmp = node.right;
         }
-        // Collections.reverse(ret);
         return ret;
+    }
+
+    public void inorder(TreeNode root){
+        if(root == null){
+            return;
+        }
+
+        inorder(root.left);
+        System.out.print(root.val + " ");
+        inorder(root.right);
     }
 
     @Test
@@ -50,8 +60,9 @@ public class _22_binary_tree_inorder_traversal {
         node2.left = node4;
         node2.right = node5;
 
-        ArrayList<Integer> ret = new _22_binary_tree_inorder_traversal().inorderTraversal(node1);
-        System.out.println(Arrays.toString(ret.toArray()));
+        //ArrayList<Integer> ret = new _22_binary_tree_inorder_traversal().inorderTraversal(node1);
+        //System.out.println(Arrays.toString(ret.toArray()));
+        new _22_binary_tree_inorder_traversal().inorder(node1);
     }
 
 }
