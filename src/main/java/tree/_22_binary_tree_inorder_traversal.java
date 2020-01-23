@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.*;
 
 /**
- * 给出一棵二叉树，返回这棵树的中序遍历
+ * 给出一棵二叉树，返回这棵树的中序遍历,非递归算法
  * 例如：
  * 给出的二叉树为{1,#,2,3},
  *
@@ -18,19 +18,21 @@ public class _22_binary_tree_inorder_traversal {
         if (root == null){
             return ret;
         }
-        Stack<TreeNode> stack = new Stack<TreeNode>();
-        stack.push(root);
-        while(stack.size() > 0){
-            TreeNode node = stack.pop();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(root);
+        while(queue.size() > 0){
+            TreeNode node = queue.poll();
             ret.add(node.val);
 
-            if(node.right != null){
-                stack.push(node.right);
-            }
             if(node.left != null){
-                stack.push(node.left);
+                queue.offer(node.left);
+            }
+
+            if(node.right != null){
+                queue.offer(node.right);
             }
         }
+        // Collections.reverse(ret);
         return ret;
     }
 
