@@ -19,7 +19,7 @@ public class _22_binary_tree_inorder_traversal {
             return ret;
         }
         Stack<TreeNode> stack = new Stack<TreeNode>();
-        stack.push(root);
+        //stack.push(root);
 
         TreeNode tmp = root;
 
