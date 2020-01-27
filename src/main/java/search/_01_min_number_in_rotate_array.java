@@ -27,58 +27,6 @@ public class _01_min_number_in_rotate_array {
         return 0;
     }
 
-    int binary_search(int[] A, int left, int right, int target)
-    {
-        if(left > right)
-        {
-            return -1;
-        }
-        int mid = (left + right) / 2;
-
-        if(target < A[mid])
-        {
-            return binary_search(A, left, mid-1, target);
-        }
-        if(target > A[mid])
-        {
-            return binary_search(A, mid+1, right, target);
-        }
-        return mid;
-    }
-
-    void swap(int[] A, int i, int j){
-        int tmp = A[i];
-        A[i] = A[j];
-        A[j] = tmp;
-    }
-
-    void quick_sort(int[] A, int left, int right){
-        if(left > right){
-            return;
-        }
-        int i = left;
-        int j = right;
-        int key = A[left];
-
-        while(i < j){
-            while(A[j] >= key && i<j){
-                j--;
-            }
-            while(A[i] <= key && i<j){
-                i++;
-            }
-            if(i < j){
-                swap(A, i, j);
-            }
-        }
-
-        A[left] = A[i];
-        A[i] = key;
-
-        quick_sort(A, left, i-1);
-        quick_sort(A, i+1, right);
-    }
-
     int max_sub_array(int[] A, int length)
     {
         int[] p = new int[length];
@@ -142,7 +90,7 @@ public class _01_min_number_in_rotate_array {
         System.out.println(Arrays.toString(A));
 
         _01_min_number_in_rotate_array obj = new _01_min_number_in_rotate_array();
-        obj.quick_sort(A, 0, A.length-1);
+        //obj.quick_sort(A, 0, A.length-1);
         System.out.println(Arrays.toString(A));
     }
 
