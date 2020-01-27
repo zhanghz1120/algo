@@ -1,6 +1,7 @@
 package search;
 
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,17 +16,73 @@ import java.util.Arrays;
  *
  */
 public class _01_min_number_in_rotate_array {
-    public int minNumberInRotateArray(int [] array) {
-        if(array == null || array.length == 0){
+    int binary_search(int[] A, int left, int right, int target)
+    {
+        if(left > right)
+        {
+            return -1;
+        }
+        int mid = (left + right) / 2;
+
+        if(target < A[mid])
+        {
+            return binary_search(A, left, mid-1, target);
+        }else if(target > A[mid])
+        {
+            return binary_search(A, mid+1, right, target);
+        }else{
+            return mid;
+        }
+    }
+
+    public int minNumberInRotateArray(int[] A) {
+        if(A == null || A.length == 0){
             return 0;
         }
 
         int i = 0;
-        int j = array.length - 1;
-        int mid = 0;
+        int j = A.length - 1;
+        //int mid = ()
+        // boolean flag = true;
+        while(true){
+            int mid = (i + j) / 2;
 
-        return 0;
+            if(A[mid] == A[i] && A[mid] == A[j]){
+                int min = A[i];
+                for(int k = i; k<=j; k++){
+                    if(A[k] < min){
+                        min = A[k];
+                    }
+                }
+                return min;
+            }
+            if(A[mid] >= A[i]){
+                // 最小值在后半部分
+                i = mid;
+            }else{
+                // 最小值在前半部分
+                j = mid;
+            }
+            if(j - i == 1){
+                return A[j];
+            }
+        }
+        //return 0;
     }
+
+    @Test
+    public void testMinNumberInRotateArray(){
+        int[] A = {3,4,5,6,1,2};
+        _01_min_number_in_rotate_array obj = new _01_min_number_in_rotate_array();
+        int ret =obj.minNumberInRotateArray(A);
+
+        Assert.assertEquals(1, ret);
+    }
+
+    /*
+    int search(int[] A, int left, int right){
+
+    }*/
 
     int max_sub_array(int[] A, int length)
     {
