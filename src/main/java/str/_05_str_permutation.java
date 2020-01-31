@@ -10,7 +10,7 @@ import java.util.*;
 
 public class _05_str_permutation {
     public ArrayList<String> Permutation(String str) {
-        
+
 
         return null;
     }
