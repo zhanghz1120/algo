@@ -9,6 +9,13 @@ package str;
 import java.util.*;
 
 public class _05_str_permutation {
+    /**
+     *  不会做呀我日
+     *  暂时放着
+     *
+     * @param str
+     * @return
+     */
     public ArrayList<String> Permutation(String str) {
 
         return null;
