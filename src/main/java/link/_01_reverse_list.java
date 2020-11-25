@@ -9,29 +9,24 @@ import common.ListNode;
  */
 public class _01_reverse_list {
     public ListNode ReverseList(ListNode head) {
-        if(head == null){
-            return null;
+        if(head == null || head.next == null){
+            return head;
         }
-        ListNode pReversedNode = null;
 
-        ListNode pPre = null;
-        ListNode pCur = head;
+        ListNode last = null;
+        ListNode current = head;
+        ListNode next = head.next;
+        while(current != null){
+            current.next = last;
 
-        while(pCur != null){
-            ListNode pNext = pCur.next;
-
-            if(pNext == null){
-                pReversedNode = pCur;
+            last = current;
+            current = next;
+            if(next != null){
+                next = current.next;
             }
-
-            pCur.next = pPre;
-            pPre = pCur;
-            pCur = pNext;
-
         }
 
-        return pReversedNode;
-
+        return last;
     }
 
 }
