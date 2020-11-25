@@ -5,42 +5,42 @@ import common.TreeNode;
 import java.util.*;
 
 public class _10_print_binary_tree_each_layer {
-    public ArrayList<ArrayList<Integer>> solution(TreeNode root){
+    //层序遍历二叉树 2020-11-25
+    public ArrayList<ArrayList<Integer>> levelOrder (TreeNode root) {
         ArrayList<ArrayList<Integer>> ret = new ArrayList<ArrayList<Integer>>();
-
         if(root == null){
             return ret;
         }
-        ArrayList<Integer> buffer = new ArrayList<Integer>();
-
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         queue.offer(root);
+
         int x = 1;
         int y = 0;
-        int flag = 1;
+        ArrayList<Integer> buffer = new ArrayList<Integer>();
         while(queue.size() > 0){
-            TreeNode node = queue.poll();
-            buffer.add(node.val);
+            TreeNode current = queue.poll();
+            TreeNode left = current.left;
+            TreeNode right = current.right;
+
+            buffer.add(current.val);
             x--;
 
-            if(node.left != null){
-                queue.offer(node.left);
+            if(left != null){
+                queue.offer(left);
                 y++;
+                //buffer.add(current.left.val);
             }
-            if(node.right != null){
-                queue.offer(node.right);
+            if(right != null){
+                queue.offer(right);
                 y++;
+                //buffer.add(current.right.val);
             }
 
             if(x == 0){
                 x = y;
                 y = 0;
-                if(flag == 1){
-                    Collections.reverse(buffer);
-                }
-                flag = flag * (-1);
-                ret.add(new ArrayList<Integer>(buffer));
-                buffer.clear();
+                ret.add(buffer);
+                buffer = new ArrayList<Integer>();
             }
         }
 

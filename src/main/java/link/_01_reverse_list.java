@@ -1,6 +1,7 @@
 package link;
 
 import common.ListNode;
+import common.TreeNode;
 
 /**
  * 反转链表
@@ -27,6 +28,14 @@ public class _01_reverse_list {
         }
 
         return last;
+    }
+
+    public static void test(TreeNode root){
+        if(root == null){
+            System.out.println();
+        }
+
+
     }
 
 }
