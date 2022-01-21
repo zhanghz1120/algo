@@ -9,25 +9,34 @@ import common.TreeNode;
  *
  */
 public class _01_reverse_list {
-    public ListNode ReverseList(ListNode head) {
+    public ListNode reverseList(ListNode head) {
         if(head == null || head.next == null){
             return head;
         }
 
-        ListNode last = null;
-        ListNode current = head;
-        ListNode next = head.next;
-        while(current != null){
-            current.next = last;
-
-            last = current;
-            current = next;
-            if(next != null){
-                next = current.next;
-            }
+        if(head.next.next == null){
+            ListNode p_t = head.next;
+            head.next = null;
+            p_t.next = head;
+            return p_t;
         }
 
-        return last;
+        ListNode p_last = head;
+        ListNode p_cur = head.next;
+        ListNode p_next = p_cur.next;
+
+        head.next=null;
+        while(p_cur != null){
+            //p_last.next = null;
+            p_cur.next = p_last;
+
+            p_last = p_cur;
+            p_cur = p_next;
+            if(p_next != null){
+                p_next = p_next.next;
+            }
+        }
+        return p_last;
     }
 
     public static void test(TreeNode root){
