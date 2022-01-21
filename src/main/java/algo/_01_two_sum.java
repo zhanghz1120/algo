@@ -25,14 +25,25 @@ public class _01_two_sum {
 
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         for(int i = 0; i<nums.length; i++){
-            if(!map.containsKey(nums[i])){
+            //if(!map.containsKey(nums[i])){
                 if(map.containsKey(target - nums[i])){
                     ret[0] = map.get(target - nums[i]);
                     ret[1] = i;
                 }
                 map.put(nums[i], i);
-            }
+
+                System.out.println(nums[i] + "  " + i);
+            //}
         }
         return ret;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {3,3};
+        int target = 6;
+
+        new _01_two_sum().twoSum(nums, target);
+
+
     }
 }
