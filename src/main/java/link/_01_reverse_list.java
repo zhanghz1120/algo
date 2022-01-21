@@ -6,6 +6,10 @@ import common.TreeNode;
 /**
  * 反转链表
  *
+ *  2022-01-21更新
+ *  注意边界条件
+ *  注意next可能为空，空指针异常
+ *  注意head的next首先置为空，循环中不再需要置空
  *
  */
 public class _01_reverse_list {
