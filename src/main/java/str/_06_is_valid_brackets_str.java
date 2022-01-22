@@ -1,8 +1,6 @@
 package str;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class _06_is_valid_brackets_str {
     // 是否是合法的括号序列
