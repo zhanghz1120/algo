@@ -9,26 +9,26 @@ import common.ListNode;
  */
 public class _02_merge_sorted_lists {
     public ListNode Merge(ListNode list1, ListNode list2) {
-        ListNode pNode1 = list1;
-        ListNode pNode2 = list2;
+        ListNode p1 = list1;
+        ListNode p2 = list2;
 
-        if(pNode1 == null){
-            return pNode2;
+        if(p1 == null){
+            return p2;
         }
-        if(pNode2 == null){
-            return pNode1;
+        if(p2 == null){
+            return p1;
         }
 
-        ListNode pMergedHead = null;
-        if(pNode1.val < pNode2.val){
-            pMergedHead = pNode1;
-            pMergedHead.next = Merge(pNode1.next, pNode2);
+        ListNode p_n = null;
+        if(p1.val < p2.val){
+            p_n = p1;
+            p_n.next = Merge(p1.next, p2);
         }else{
-            pMergedHead = pNode2;
-            pMergedHead.next = Merge(pNode1, pNode2.next);
+            p_n = p2;
+            p_n.next = Merge(p1, p2.next);
         }
 
-        return pMergedHead;
+        return p_n;
 
     }
 
