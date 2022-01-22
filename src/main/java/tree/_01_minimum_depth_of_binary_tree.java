@@ -30,13 +30,5 @@ public class _01_minimum_depth_of_binary_tree {
         }
     }
 
-    @Test
-    private void testRun(){
-        System.out.println();
-    }
-
-
-
-
 
 }
