@@ -5,15 +5,15 @@ import common.TreeNode;
 import java.util.*;
 
 public class _09_path_sum_ii {
-    ArrayList<ArrayList<Integer>> ret = new ArrayList<ArrayList<Integer>>();
-    ArrayList<Integer> buffer = new ArrayList<Integer>();
+    List<List<Integer>> ret = new ArrayList<List<Integer>>();
+    List<Integer> buffer = new ArrayList<Integer>();
 
-    ArrayList<ArrayList<Integer>> pathSum(TreeNode root, int target){
+    List<List<Integer>> pathSum(TreeNode root, int target){
         inOrder(root, buffer, target);
         return ret;
     }
 
-    void inOrder(TreeNode root, ArrayList<Integer> buffer, int target){
+    void inOrder(TreeNode root, List<Integer> buffer, int target){
         if(root == null){
             return;
         }

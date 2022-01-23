@@ -19,7 +19,6 @@ public class _03_longest_common_prefix {
             }
         }
         if(strs.length == 1){
-            //System.out.println("+++");
             return strs[0];
         }
         int min_length = strs[0].length();

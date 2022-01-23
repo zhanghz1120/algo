@@ -20,19 +20,15 @@ public class _03_binary_tree_preorder_traversal {
 
         stack.push(root);
         while(!stack.empty()){
-            TreeNode node = stack.pop();
-
-            ret.add(node.val);
-
+            TreeNode n = stack.pop();
+            ret.add(n.val);
             // 先放右子树再放左子树
-            if(node.right != null){
-                stack.push(node.right);
+            if(n.right != null){
+                stack.push(n.right);
             }
-
-            if(node.left != null){
-                stack.push(node.left);
+            if(n.left != null){
+                stack.push(n.left);
             }
-
         }
         return ret;
     }
