@@ -9,16 +9,27 @@ package str;
 import java.util.*;
 
 public class _05_str_permutation {
-    /**
-     *  不会做呀我日
-     *  暂时放着
-     *
-     * @param str
-     * @return
-     */
-    public ArrayList<String> Permutation(String str) {
 
-        return null;
+    List<List<Integer>> res = new ArrayList<List<Integer>>();
+
+    public List<List<Integer>> permute(int[] nums) {
+        List<Integer> buffer = new ArrayList<Integer>();
+        sol(nums, buffer);
+        return res;
+    }
+
+    void sol(int[] nums, List<Integer> buffer){
+        if(buffer.size() == nums.length) {
+            res.add(new ArrayList<>(buffer));
+            return;
+        }
+
+        for(int i = 0; i<nums.length; i++){
+            if(buffer.contains(nums[i])) continue;
+            buffer.add(nums[i]);
+            sol(nums, buffer);
+            buffer.remove(buffer.size()-1);
+        }
     }
 
 }
