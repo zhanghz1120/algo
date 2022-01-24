@@ -22,33 +22,16 @@ public class _13_construct_binary_tree_from_inorder_and_postorder_traversal {
     }
 
     public TreeNode build(int[] inorder, int[] post_order, int i1, int j1, int i2, int j2){
-        if(i1 > j1){
-            return null;
-        }
-
+        if(i1 > j1) return null;
         TreeNode root = new TreeNode(post_order[j2]);
         int mid = map.get(root.val);
-
         int leftLength = mid-i1;
         int rightLength= j1-mid;
-
         TreeNode left = build(inorder, post_order, i1, i1+leftLength-1, i2, i2+leftLength-1);
         TreeNode right = build(inorder, post_order, j1-rightLength+1, j1, j2-rightLength, j2-1);
         root.left = left;
         root.right = right;
         return root;
-    }
-
-    @Test
-    public void testBuildTree(){
-        _13_construct_binary_tree_from_inorder_and_postorder_traversal obj =
-                new _13_construct_binary_tree_from_inorder_and_postorder_traversal();
-
-        int[] inorder = {5, 0, 6, 1, 2, 8, 3};
-        int[] post_order = {5, 6, 0, 1, 8, 3, 2};
-        TreeNode root = obj.buildTree(inorder, post_order);
-
-        System.out.println(Arrays.toString(TreeNode.printTree(root).toArray()));
     }
 
 }
