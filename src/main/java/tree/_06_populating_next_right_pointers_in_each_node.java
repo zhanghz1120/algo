@@ -16,22 +16,15 @@ import common.TreeLinkNode;
 public class _06_populating_next_right_pointers_in_each_node {
 
     public void connect(TreeLinkNode root) {
-        if(root == null){
-            return;
-        }
+        if(root == null) return;
+        connectTwoNodes(root.left,root.right);
+    }
 
-        if(root.left != null){
-            root.left.next = root.right;
-            connect(root.left);
-        }
-        if(root.right != null){
-            if(root.next != null){
-                root.right.next = root.next.left;
-            }else{
-                root.right.next = null;
-            }
-
-            connect(root.right);
-        }
+    void connectTwoNodes(TreeLinkNode node1, TreeLinkNode node2){
+        if(node1 == null || node2 == null) return;
+        node1.next = node2;
+        connectTwoNodes(node1.left,node1.right);
+        connectTwoNodes(node2.left,node2.right);
+        connectTwoNodes(node1.right,node2.left);
     }
 }

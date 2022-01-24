@@ -2,16 +2,9 @@ package tree;
 
 
 import common.TreeNode;
-import org.junit.Test;
 
 /**
  * 求给定二叉树的最小深度。最小深度是指树的根结点到最近叶子结点的最短路径上结点的数量。
- *
- *
- *
- *
- *
- *
  */
 public class _01_minimum_depth_of_binary_tree {
 
