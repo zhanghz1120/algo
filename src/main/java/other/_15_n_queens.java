@@ -68,8 +68,8 @@ public class _15_n_queens {
     }
 
     public static void main(String[] args) {
-        int n = 4;
-        List<List<String>> res = new _15_n_queens().solveNQueens(5);
+        int n = 8;
+        List<List<String>> res = new _15_n_queens().solveNQueens(n);
         for(List li : res){
             for(int i = 0; i<li.size(); i++){
                 System.out.println(li.get(i));
