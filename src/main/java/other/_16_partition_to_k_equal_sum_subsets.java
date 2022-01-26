@@ -1,7 +1,7 @@
 package other;
 
 import java.util.*;
-
+/*
 public class _16_partition_to_k_equal_sum_subsets {
     boolean res = false;
 
@@ -12,7 +12,7 @@ public class _16_partition_to_k_equal_sum_subsets {
             sum += nums[i];
         }
         if(sum % k != 0){
-            reurn false;
+            return false;
         }
         int target = sum / k;
 
@@ -22,7 +22,7 @@ public class _16_partition_to_k_equal_sum_subsets {
 
     boolean backtrace(int[] nums, int i, int target, int[] bucket){
         if(i == nums.length){
-            return;
+            return false;
         }
         for(int j = 0; j<k; j++){
             // nums[i] 是否要放在j号桶里
@@ -51,3 +51,4 @@ public class _16_partition_to_k_equal_sum_subsets {
         obj.traverse2(nums,0);
     }
 }
+ */
