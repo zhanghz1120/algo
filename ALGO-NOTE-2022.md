@@ -19,6 +19,55 @@ int run(TreeNode root){
 	}
 }
 ```
+2.二叉树的后序遍历，迭代写法
+```java
+public ArrayList<Integer> postorderTraversal(TreeNode root) {
+    ArrayList<Integer> ret = new ArrayList<Integer>();
+    if(root == null){
+        return ret;
+    }
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    stack.push(root);
+    while(!stack.empty()){
+        TreeNode node = stack.pop();
+        ret.add(node.val);
+
+        if(node.left != null){
+            stack.push(node.left);
+        }
+        if(node.right != null){
+            stack.push(node.right);
+        }
+    }
+
+    Collections.reverse(ret);
+    return ret;
+}
+```
+3.二叉树的先序遍历，迭代写法
+```
+public ArrayList<Integer> preorderTraversal(TreeNode root) {
+    ArrayList<Integer> ret = new ArrayList<Integer>();
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    if(root == null){
+        return ret;
+    }
+
+    stack.push(root);
+    while(!stack.empty()){
+        TreeNode n = stack.pop();
+        ret.add(n.val);
+        // 先放右子树再放左子树
+        if(n.right != null){
+            stack.push(n.right);
+        }
+        if(n.left != null){
+            stack.push(n.left);
+        }
+    }
+    return ret;
+}
+```
 
 ### 二叉搜索树
 ### DFS
